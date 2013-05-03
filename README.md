@@ -4,7 +4,7 @@ Yasnippets for [AngularJS](http://angularjs.org/).
 
 ## Installation
 
-I highly recommended installing tagedit through elpa.
+I highly recommended installing angular-snippets through elpa.
 
 It's available on [marmalade](http://marmalade-repo.org/) and
 [melpa](http://melpa.milkbox.net/):
