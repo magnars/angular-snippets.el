@@ -137,6 +137,7 @@
 (setq angular-snippets-root (file-name-directory
                             (or (buffer-file-name) load-file-name)))
 
+;;;###autoload
 (eval-after-load "yasnippet"
   (yas/load-directory (expand-file-name "snippets" angular-snippets-root)))
 
