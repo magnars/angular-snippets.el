@@ -4,12 +4,15 @@ Yasnippets for [AngularJS](http://angularjs.org/).
 
 ## Installation
 
-If you haven't, install [yasnippet](http://capitaomorte.github.com/yasnippet/),
-then dump angular-snippets.el into your load path somehow, and require it:
+I highly recommended installing tagedit through elpa.
 
-    (require 'angular-snippets)
+It's available on [marmalade](http://marmalade-repo.org/) and
+[melpa](http://melpa.milkbox.net/):
 
-You also need to install dependencies:
+    M-x package-install angular-snippets
+
+You can also install the dependencies on your own, and just dump
+angular-snippets in your path somewhere:
 
  - <a href="https://github.com/magnars/s.el">s.el</a>
  - <a href="https://github.com/magnars/dash.el">dash.el</a>
@@ -24,6 +27,21 @@ you expand a directive. You can also use `ng-snip-show-docs-at-point`
 to show documentation for the closest `ng-*` directive. I have it on
 `C-c C-d`. Pressing it again within 10 seconds opens the relevant
 documentation in your browser.
+
+## Setup
+
+Well, you'll have to require it. You'll also need
+[yasnippets](https://github.com/capitaomorte/yasnippet) of course
+(sorry about the insult if that wasn't obvious, but dude, you had it
+coming).
+
+    (require 'angular-snippets)
+
+I would also recommend adding `ng-snip-show-docs-at-point` to get that
+nice documentation lookup thingie. Maybe something along the lines of:
+
+    (eval-after-load "sgml-mode"
+      '(define-key html-mode-map (kbd "C-c C-d") 'ng-snip-show-docs-at-point))
 
 ## Todo
 
