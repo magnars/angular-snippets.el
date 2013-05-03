@@ -134,12 +134,18 @@
       (error "No angular identifier at point"))
     (match-string 0)))
 
-(setq angular-snippets-root (file-name-directory
-                            (or (buffer-file-name) load-file-name)))
+(setq angular-snippets-root (file-name-directory (or (buffer-file-name)
+                                                    load-file-name)))
+
+;;;###autoload
+(defun angular-snippets-initialize ()
+  (let ((snip-dir (expand-file-name "snippets" angular-snippets-root)))
+    (add-to-list 'yas-snippet-dirs snip-dir t)
+    (yas/load-directory snip-dir)))
 
 ;;;###autoload
 (eval-after-load "yasnippet"
-  (yas/load-directory (expand-file-name "snippets" angular-snippets-root)))
+  '(angular-snippets-initialize))
 
 (provide 'angular-snippets)
 ;;; angular-snippets.el ends here
