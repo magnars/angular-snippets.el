@@ -9,15 +9,21 @@ then dump angular-snippets.el into your load path somehow, and require it:
 
     (require 'angular-snippets)
 
-That's it.
+You also need to install dependencies:
+
+ - <a href="https://github.com/magnars/s.el">s.el</a>
+ - <a href="https://github.com/magnars/dash.el">dash.el</a>
 
 ## Usage
 
 Right now there's only snippets for `html-mode` (mirrored into
 `web-mode`) for the `ng-*` attribute directives. They all expand from `ng`.
 
-Something slightly cool is that you get a short message with docs when you
-expand a directive.
+Something slightly cool is that you get a short message with docs when
+you expand a directive. You can also use `ng-snip-show-docs-at-point`
+to show documentation for the closest `ng-*` directive. I have it on
+`C-c C-d`. Pressing it again within 10 seconds opens the relevant
+documentation in your browser.
 
 ## Todo
 

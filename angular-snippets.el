@@ -24,7 +24,15 @@
 
 ;;; Code:
 
-(defvar ng-docs
+(require 'dash)
+(require 's)
+
+;;;###autoload
+(defun ng-snip-show-docs-at-point ()
+  (interactive)
+  (ng-snip/show-or-browse-docs (ng-snip/closest-ng-identifer)))
+
+(defvar ng-directive-docstrings
   '(("ng-app" . "Auto-bootstraps an application, with optional module to load.")
     ("ng-bind" . "Replace text content of element with value of given expression.")
     ("ng-bind-html-unsafe" . "Set innerHTML of element to unsanitized value of given expression.")
@@ -65,16 +73,64 @@
     ("ng-style" . "Sets style attributes from an object of DOM style properties. ")
     ("ng-submit" . "Eval the given expression when form is submitted, and prevent default.")
     ("ng-switch" . "Switch on given expression to conditionally change DOM structure.")
+    ("ng-switch-when" . "Include this element if value matches ng-switch on expression.")
     ("ng-transclude" . "Signifies where to insert transcluded DOM.")
     ("ng-view" . "Signifies where route views are shown.")))
 
+(defvar ng-snip/docs-indirection
+  '(("ng-options" . "select")
+    ("ng-switch-when" . "ng-switch")))
+
+(defvar ng-snip/directive-root-url
+  "http://docs.angularjs.org/api/ng.directive:")
+
+(defun -aget (alist key)
+  (cdr (assoc key alist)))
+
+(defun ng-snip/directive-to-docs (directive)
+  (let ((name (car directive))
+        (docstring (cdr directive)))
+    (list name
+          :docstring docstring
+          :docurl (s-with (or (-aget ng-snip/docs-indirection name) name)
+                    (s-lower-camel-case)
+                    (concat ng-snip/directive-root-url)))))
+
+(setq ng-docs (-map 'ng-snip/directive-to-docs ng-directive-docstrings))
+
+(defun ng-snip/docs-value (id prop)
+  (plist-get (-aget ng-docs id) prop))
+
+(defvar ng-snip/last-docs-message nil)
+
+(defun ng-snip/forget-last-docs-message ()
+  (setq ng-snip/last-docs-message nil))
+
 (defun ng-snip/docs (id)
-  (message (cdr (assoc id ng-docs)))
+  (message (ng-snip/docs-value id :docstring))
+  (setq ng-snip/last-docs-message id)
+  (run-with-timer 10.0 nil 'ng-snip/forget-last-docs-message)
   nil)
+
+(defun ng-snip/show-or-browse-docs (id)
+  (if (s-equals? ng-snip/last-docs-message id)
+      (ng-snip/browse-docs id)
+    (ng-snip/docs id)))
+
+(defun ng-snip/browse-docs (id)
+  (browse-url (ng-snip/docs-value id :docurl)))
 
 (defun ng-snip/maybe-space-after-attr ()
   (unless (looking-at "[ />]\\|$")
     (insert " ")))
+
+(defun ng-snip/closest-ng-identifer ()
+  (save-excursion
+    (forward-char 3)
+    (search-backward "ng-")
+    (unless (looking-at "ng-[a-z\-]+")
+      (error "No angular identifier at point"))
+    (match-string 0)))
 
 (setq angular-snippets-root (file-name-directory
                             (or (buffer-file-name) load-file-name)))
