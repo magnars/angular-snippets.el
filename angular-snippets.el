@@ -5,7 +5,7 @@
 ;; Author: Magnar Sveen <magnars@gmail.com>
 ;; Keywords: snippets
 ;; Version: 0.2.1
-;; Package-Requires: ((s "1.4.0") (dash "1.2.0"))
+;; Package-Requires: ((yasnippet "0.7.0") (s "1.4.0") (dash "1.2.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 
 ;;; Code:
 
+(require 'yasnippet)
 (require 'dash)
 (require 's)
 
@@ -140,7 +141,8 @@
 ;;;###autoload
 (defun angular-snippets-initialize ()
   (let ((snip-dir (expand-file-name "snippets" angular-snippets-root)))
-    (add-to-list 'yas-snippet-dirs snip-dir t)
+    (when (boundp 'yas-snippet-dirs)
+      (add-to-list 'yas-snippet-dirs snip-dir t))
     (yas/load-directory snip-dir)))
 
 ;;;###autoload
