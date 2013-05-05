@@ -4,7 +4,7 @@
 
 ;; Author: Magnar Sveen <magnars@gmail.com>
 ;; Keywords: snippets
-;; Version: 0.2.2
+;; Version: 0.2.3
 ;; Package-Requires: ((s "1.4.0") (dash "1.2.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
