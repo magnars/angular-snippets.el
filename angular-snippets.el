@@ -135,8 +135,8 @@
       (error "No angular identifier at point"))
     (match-string 0)))
 
-(setq angular-snippets-root (file-name-directory (or (buffer-file-name)
-                                                    load-file-name)))
+(setq angular-snippets-root (file-name-directory (or load-file-name
+                                                    (buffer-file-name))))
 
 ;;;###autoload
 (defun angular-snippets-initialize ()
